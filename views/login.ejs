@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <header>
+        <h1 class="logo-top">EXAM PORTAL</h1>
+        <div class="menu-icon" id="menu-icon">&#9776;</div>
+        <nav class="navbar" id="navbar">
+            <a href="/" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#service">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="task-form">
+            <h2 class="title">Login</h2>
+            <form id="loginForm" action="/loginRedirect" method="POST" class="login-form form">
+                <div class="input-group">
+                  <h3 class="label">E-Mail ID</h3>
+                  <input type="email" id="loginEmail" name="email" placeholder="Enter your email" class="input-field" required />
+                </div>
+              
+                <div class="input-group">
+                  <h3 class="label">Password</h3>
+                  <input type="password" id="loginPassword" name="password" placeholder="Enter your password" class="input-field" required />
+                </div>
+              
+                <div class="input-group">
+                  <label><input type="checkbox" name="remember" /> Remember me</label>
+                </div>
+              
+                <div class="button-group">
+                  <button type="submit" class="button submit-button">Login</button>
+                  <button type="reset" class="button reset-button">Reset</button>
+                </div>
+              
+                <p class="text-center text-gray-400 mt-4" style="text-align: center; margin-top: 20px;">
+                  Don't have an account? <a href="/register" class="text-blue-500">Register here</a>
+                </p>
+              </form>
+              
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Portal - Subject Selection</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <style>
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .subject-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .subject-card:hover {
+            transform: translateY(-5px);
+        }
+        .subject-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subject-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .take-test-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .take-test-btn:hover {
+            background: #45a049;
+        }
+        .page-title {
+            text-align: center;
+            padding: 40px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="logo-top">EXAM TIPS</h1>
+        <nav class="navbar">
+            <a href="/" class="active">Home</a>
+            <a href="/erepo">e-Repository</a>
+            <a href="/forum">OpenForum</a>
+            <a href="/exam-portal">Exam Portal</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <main style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <h1 class="page-title" style="color: #fff;">Available Subjects</h1>
+        <div class="subjects-grid">
+            <div class="subject-card">
+                <h3>JAVA</h3>
+                <p>Test your JAVA skills with our comprehensive exam.</p>
+                <button class="take-test-btn" onclick="startExam('java')">Take Test</button>
+            </div>
+            <div class="subject-card">
+                <h3>Physics</h3>
+                <p>Challenge yourself with physics problems and concepts.</p>
+                <button class="take-test-btn" onclick="startExam('physics')">Take Test</button>
+            </div>
+            <div class="subject-card">
+                <h3>Chemistry</h3>
+                <p>Explore chemical reactions and molecular structures.</p>
+                <button class="take-test-btn" onclick="startExam('chemistry')">Take Test</button>
+            </div>
+            <div class="subject-card">
+                <h3>Biology</h3>
+                <p>Dive into the world of life sciences and organisms.</p>
+                <button class="take-test-btn" onclick="startExam('biology')">Take Test</button>
+            </div>
+            <div class="subject-card">
+                <h3>Computer Science</h3>
+                <p>Test your programming and computer fundamentals.</p>
+                <button class="take-test-btn" onclick="startExam('computer-science')">Take Test</button>
+            </div>
+            <div class="subject-card">
+                <h3>English</h3>
+                <p>Assess your language and comprehension skills.</p>
+                <button class="take-test-btn" onclick="startExam('english')">Take Test</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-section">
+          <img
+            src="https://cdn.dribbble.com/users/3324342/screenshots/6164965/media/5136e8b8dca93ed8564770f967383aa0.jpg?resize=400x0"
+            alt="Exam Portal Logo" class="footer-logo">
+          <p>Exam Tips is a trusted platform for all your exam needs. Providing seamless exam scheduling, conducting, and
+            results processing.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Student Resources</h3>
+          <ul>
+            <li><a href="#">Exam Schedule</a></li>
+            <li><a href="#">Study Materials</a></li>
+            <li><a href="#">Practice Tests</a></li>
+            <li><a href="#">Results</a></li>
+            <li><a href="#">Guidelines</a></li>
+          </ul>
+        </div>
+        <div class="footer-section-contact">
+          <h3>Contact Information</h3>
+          <p>Silicon University</p>
+          <p>Patia, Bhubaneswar</p>
+          <p>CSE C2</p>
+          <p>Email: <a href="mailto:raghvendrapratap1552004@gmail.com">raghvendrapratap1552004@gmail.com</a></p>
+          <p>Email: <a href="mailto:saurabhsingh@gmail.com">saurabhsingh@gmail.com</a></p>
+          <p>Phone: 9113701451</p>
+          <p>Phone: 8521970487</p>
+        </div>
+      </footer>
+
+    <script>
+        function startExam(subject) {
+            // Store the selected subject in localStorage
+            localStorage.setItem('selectedSubject', subject);
+            // Redirect to the exam page
+            window.location.href = '/exam';
+        }
+    </script>
+</body>
+</html>

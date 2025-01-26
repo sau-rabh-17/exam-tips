@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../styles/register.css">
+</head>
+
+<body class="bg-gray-900 text-white">
+    <header>
+        <h1 class="logo-top">EXAM PORTAL</h1>
+        <div class="menu-icon" id="menu-icon">&#9776;</div>
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#service">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="task-form">
+            <h2 class="title">Create New Account</h2>
+            <form id="registerForm" action="/submit" method="POST" class="register-form form">
+                <div class="input-group">
+                  <h3 class="label">Name</h3>
+                  <input type="text" id="name" name="name" placeholder="Enter your name" class="input-field" required />
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Aadhar</h3>
+                  <input type="text" id="aadhar" name="aadhar" placeholder="Enter your Aadhar" class="input-field" required />
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Password</h3>
+                  <input type="password" id="password" name="password" placeholder="Enter your password" class="input-field" required />
+                </div>
+                <div class="input-group">
+                  <h3 class="label">E-Mail ID</h3>
+                  <input type="email" id="email" name="email" placeholder="Enter your email" class="input-field" required />
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Age</h3>
+                  <input type="number" id="age" name="age" placeholder="Enter your age" class="input-field" required />
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Gender</h3>
+                  <div class="radio-group">
+                    <label><input type="radio" name="gender" value="Male" required /> Male</label>
+                    <label><input type="radio" name="gender" value="Female" required /> Female</label>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <h3 class="label">College Address</h3>
+                  <textarea id="address" name="address" placeholder="Enter your college address" class="textarea-field" required></textarea>
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Branch</h3>
+                  <select id="branch" name="branch" class="input-field" required>
+                    <option value="">Select Branch</option>
+                    <option value="CS">Computer Science</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="EE">Electrical Engineering</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <h3 class="label">Technical Skills</h3>
+                  <div class="checkbox-group">
+                    <label><input type="checkbox" name="skills" value="C" /> C</label>
+                    <label><input type="checkbox" name="skills" value="Java" /> Java</label>
+                    <label><input type="checkbox" name="skills" value="Python" /> Python</label>
+                    <label><input type="checkbox" name="skills" value="JSP" /> JSP</label>
+                  </div>
+                </div>
+                <div class="button-group">
+                  <button type="submit" class="button submit-button">Submit</button>
+                  <button type="reset" class="button reset-button">Reset</button>
+                </div>
+              </form>
+              
+            <p class="text-center text-gray-400 mt-4" style="text-align: center; margin-top: 15px;">
+                Already have an account? <a href="/login" class="text-blue-500">Login here</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

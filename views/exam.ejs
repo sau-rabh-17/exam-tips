@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .exam-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            margin-right: 280px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .instructions {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .instructions h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .instructions ul {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .question-container {
+            display: none;
+            padding: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .option:hover {
+            background: #f0f0f0;
+        }
+        .option.selected {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+        .question-palette {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            width: 250px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 15px;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        .palette-btn {
+            width: 35px;
+            height: 35px;
+            margin: 3px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .palette-btn.not-visited {
+            background: #f5f5f5;
+        }
+        
+        .palette-btn.not-answered {
+            background: #ffcdd2;
+        }
+        
+        .palette-btn.answered {
+            background: #c8e6c9;
+        }
+        
+        .palette-btn.marked-review {
+            background: #fff3e0;
+        }
+        
+        .palette-btn.answered-marked {
+            background: linear-gradient(45deg, #c8e6c9 50%, #fff3e0 50%);
+        }
+        
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .nav-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .clear-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .save-next-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .marked {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">Time Left: 60:00</div>
+    <div class="question-palette" id="questionPalette">
+        <div class="section">
+            <h3>Physics</h3>
+            <!-- Question palette buttons will be inserted here -->
+        </div>
+        <div class="section">
+            <h3>Chemistry</h3>
+            <!-- Question palette buttons will be inserted here -->
+        </div>
+        <div class="section">
+            <h3>Mathematics</h3>
+            <!-- Question palette buttons will be inserted here -->
+        </div>
+    </div>
+    
+    <div class="exam-container">
+        <div class="instructions" id="instructions">
+            <h2 id="examTitle">Exam Instructions</h2>
+            <ul>
+                <li>This exam contains multiple choice questions</li>
+                <li>Each correct answer carries 4 marks</li>
+                <li>Each incorrect answer carries -1 mark (negative marking)</li>
+                <li>Total time allowed is 60 minutes</li>
+                <li>You can mark questions for review and return to them later</li>
+                <li>Click "Start Exam" when you're ready to begin</li>
+            </ul>
+            <button class="start-btn" onclick="startExam()">Start Exam</button>
+        </div>
+
+        <div class="question-container" id="questionContainer" style="display: none;">
+            <div class="question" id="question">
+                <!-- Question content will be inserted here -->
+            </div>
+            <div class="options" id="options">
+                <!-- Options will be inserted here -->
+            </div>
+            <div class="navigation">
+                <button class="nav-btn clear-btn" onclick="clearResponse()">Clear Response</button>
+                <button class="nav-btn mark-review" onclick="markForReview()">Mark for Review & Next</button>
+                <button class="nav-btn save-next-btn" onclick="saveAndNext()">Save & Next</button>
+                <button class="nav-btn submit-btn" onclick="submitExam()">Submit Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set exam title based on selected subject
+        window.onload = function() {
+            const subject = localStorage.getItem('selectedSubject');
+            if (subject) {
+                document.getElementById('examTitle').textContent = 
+                    subject.toUpperCase() + ' Exam Instructions';
+            } else {
+                window.location.href = '/exam-portal';
+            }
+        };
+    </script>
+
+    <script src="/exam.js"></script>
+</body>
+</html>

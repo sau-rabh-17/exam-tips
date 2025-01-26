@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Portal</title>
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="/styles/footer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+</head>
+
+<body>
+  <header>
+    <h1 class="logo-top">EXAM TIPS</h1>
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <nav class="navbar" id="navbar">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#service">Services</a>
+      <a href="#contact">Contact</a>
+      <% if (loggedIn) { %>
+        <button><a href="/logout">Logout</a></button>
+      <% } else { %>
+        <button><a href="/login">Login</a></button>
+      <% } %>
+    </nav>
+  </header>
+
+  <main>
+    <section class="content">
+      <div class="about-section">
+        <h2>ULTIMATE EXAM PORTAL</h2>
+        <p>Welcome to the ultimate platform for mastering exams and landing your dream job! Our portal offers a
+          comprehensive range of mock tests, real-time exams, and preparation resources across various fields to
+          boost your skills and confidence. With expertly crafted practice tests, personalized progress tracking,
+          and industry-aligned preparation, EXAM PORTAL ensures you are thoroughly prepared for competitive exams
+          and job interviews. Join us to experience structured learning, self-paced practice, and all the tools you
+          need to excel. Empower your preparation journey with <span>EXAM PORTAL</span> — your pathway to success!</p>
+        <button class="about-section-button">Read More</button>
+      </div>
+      <div class="image-section">
+        <img src="https://www.houseofdev.tech/hubfs/4%20blog%20-%20ectech.png#keepProtocol"
+          alt="Online Examination Illustration">
+      </div>
+    </section>
+  </main>
+
+  <!-- New Section for Major Features -->
+  <section class="features">
+    <h2>Our Major Features</h2>
+    <div class="feature-container">
+      <div class="feature-box">
+        <h3>Openforum</h3>
+        <p>Join the community discussions, share ideas, and engage with experts to solve queries.</p>
+        <div style="margin-top: 10px;">
+          <a href="/forum" style="font-size: 35px; padding-top: 10px;"><i class="fa-solid fa-person-dress"></i></a>
+        </div>
+      </div>
+      <div class="feature-box">
+        <h3>e-Repository</h3>
+        <p>Access a vast library of resources including previous papers, books, and study materials.</p>
+        <div style="margin-top: 7px;">
+          <a href="/erepo" style="font-size: 30px;"><i class="fa-solid fa-box-open"></i></a>
+        </div>
+      </div>
+      <div class="feature-box">
+        <h3>MyWall</h3>
+        <p>Create your personalized space for tracking progress, goals, and learning activities.</p>
+        <div style="margin-top: 15px;">
+          <a href="/myWall" style="font-size: 30px;"><i class="fa-regular fa-id-badge"></i></a>
+        </div>
+      </div>
+      <div class="feature-box">
+        <h3>Exam Portal</h3>
+        <p>Take mock exams, evaluate your performance, and get real-time results to improve your preparation.</p>
+        <div style="margin-top: 10px;">
+          <a href="/examportal"><i class="fa-solid fa-book" style="font-size: 30px;"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-section">
+      <img
+        src="https://cdn.dribbble.com/users/3324342/screenshots/6164965/media/5136e8b8dca93ed8564770f967383aa0.jpg?resize=400x0"
+        alt="Exam Portal Logo" class="footer-logo">
+      <p>Exam Tips is a trusted platform for all your exam needs. Providing seamless exam scheduling, conducting, and
+        results processing.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Student Resources</h3>
+      <ul>
+        <li><a href="#">Exam Schedule</a></li>
+        <li><a href="#">Study Materials</a></li>
+        <li><a href="#">Practice Tests</a></li>
+        <li><a href="#">Results</a></li>
+        <li><a href="#">Guidelines</a></li>
+      </ul>
+    </div>
+    <div class="footer-section-contact">
+      <h3>Contact Information</h3>
+      <p>Silicon University</p>
+      <p>Patia, Bhubaneswar</p>
+      <p>CSE C2</p>
+      <p>Email: <a href="mailto:raghvendrapratap1552004@gmail.com">raghvendrapratap1552004@gmail.com</a></p>
+      <p>Email: <a href="mailto:saurabhsingh@gmail.com">saurabhsingh@gmail.com</a></p>
+      <p>Phone: 9113701451</p>
+      <p>Phone: 8521970487</p>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fc;
+  color: #333;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+header {
+  background-color: #081b29;
+  color: white;
+  padding: 20px 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+nav a.active {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #081b29;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Container for Content */
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* Create Post Form */
+.create-post-form {
+  background-color: white;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.create-post-form h2 {
+  margin-bottom: 20px;
+}
+
+.create-post-form .form-group {
+  margin-bottom: 20px;
+}
+
+.create-post-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.create-post-form input, .create-post-form select, .create-post-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.create-post-form button {
+  background-color: #081b29;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.create-post-form button:hover {
+  background-color: #1e90ff;
+}
+
+/* Display Posts */
+.posts-list {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.posts-list h2 {
+  margin-bottom: 20px;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-item {
+  margin-bottom: 20px;
+}
+
+.post-item h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.post-item p {
+  font-size: 16px;
+}
+
+.post-item small {
+  color: #95a5a6;
+  font-size: 14px;
+}
+
+.post-item a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.post-item a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .create-post-form, .posts-list {
+    padding: 20px;
+  }
+}

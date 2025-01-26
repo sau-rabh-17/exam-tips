@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+        
+        .total-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        
+        .section-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .section-score {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .section-score h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .question-analysis {
+            margin-top: 20px;
+        }
+        
+        .question-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-row.header {
+            font-weight: bold;
+            background: #f8f9fa;
+        }
+        
+        .correct {
+            color: #4caf50;
+        }
+        
+        .incorrect {
+            color: #f44336;
+        }
+        
+        .not-attempted {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="results-container">
+        <h1 style="text-align: center; margin-bottom: 20px;">Exam Results</h1>
+        
+        <div class="score-summary">
+            <div class="total-score">Total Score: <span id="totalScore">0</span></div>
+            <p>Out of <span id="maxScore">6</span> marks</p>
+        </div>
+        
+        <div class="section-scores">
+            <div class="section-score">
+                <h3>java</h3>
+                <div id="java">1</div>
+            </div>
+            <div class="section-score">
+                <h3>Chemistry</h3>
+                <div id="chemistryScore">0</div>
+            </div>
+            <div class="section-score">
+                <h3>Mathematics</h3>
+                <div id="mathematicsScore">0</div>
+            </div>
+        </div>
+        
+        <div class="question-analysis">
+            <h2>Detailed Analysis</h2>
+            <div class="question-row header">
+                <div>Q.No</div>
+                <div>Status</div>
+                <div>Marks</div>
+                <div>Time Spent</div>
+            </div>
+            <div id="analysisRows">
+                <!-- Analysis rows will be inserted here -->
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="window.print()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Download Result
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Load and display results
+        window.onload = function() {
+            const results = JSON.parse(localStorage.getItem('examResults'));
+            if (results) {
+                document.getElementById('totalScore').textContent = results.totalScore;
+                document.getElementById('java').textContent = results.sectionScores.java;
+                document.getElementById('chemistryScore').textContent = results.sectionScores.chemistry;
+                document.getElementById('mathematicsScore').textContent = results.sectionScores.mathematics;
+                
+                const analysisRows = document.getElementById('analysisRows');
+                results.questionAnalysis.forEach((analysis, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'question-row';
+                    row.innerHTML = `
+                        <div>${index + 1}</div>
+                        <div class="${analysis.status.toLowerCase()}">${analysis.status}</div>
+                        <div>${analysis.marks}</div>
+                        <div>${analysis.timeSpent}s</div>
+                    `;
+                    analysisRows.appendChild(row);
+                });
+            }
+        };
+    </script>
+</body>
+</html>
