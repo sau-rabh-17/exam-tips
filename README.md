@@ -35,6 +35,7 @@ The following dependencies are used in the project:
    ```bash
    npm install
 3. Set up PostgreSQL database and configure the connection in your project.
+   (Database setup code will be provided after few days)
 
 4. Run the application:
    ```bash
