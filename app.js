@@ -300,37 +300,142 @@ app.post("/create-post", async (req, res) => {
 
 
 
-app.get("/exam-portal", (req, res) => {
+// Route to display exam portal
+app.get("/exam-portal", async (req, res) => {
   if (req.session.loggedIn) {
-    res.render("examportal");
+    try {
+      // Get user's previous exam results
+      const results = await pool.query(
+        "SELECT * FROM exam_results WHERE aadhar = $1 ORDER BY timestamp DESC",
+        [req.session.aadhar]
+      );
+      
+      res.render("exam-portal", { results: results.rows });
+    } catch (err) {
+      console.error(err);
+      res.render("exam-portal", { results: [] });
+    }
   } else {
     res.redirect("/login");
   }
 });
 
-app.get("/examportal", (req, res) => {
-  if (req.session.loggedIn) {
-    res.render("exam-portal");
-  } else {
-    res.redirect("/login");
+// Route to start an exam
+app.get("/exam", async (req, res) => {
+  if (!req.session.loggedIn) {
+    return res.redirect("/login");
+  }
+  
+  const language = req.query.lang;
+  const validLanguages = ["java", "cpp", "python"];
+  
+  if (!validLanguages.includes(language)) {
+    return res.redirect("/exam-portal");
+  }
+  
+  try {
+    // Get 10 random questions for the selected language
+    const questions = await pool.query(
+      "SELECT * FROM exam_questions WHERE language = $1 ORDER BY RANDOM() LIMIT 10",
+      [language]
+    );
+    
+    res.render("exam", { 
+      examLanguage: language.charAt(0).toUpperCase() + language.slice(1),
+      questions: questions.rows 
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect("/exam-portal");
   }
 });
 
-app.get("/exam",(req,res)=>{
-  if(req.session.loggedIn){
-    res.render("exam");
-  }else{
-    res.redirect("/login");
+// Route to handle exam submission
+app.post("/submit-exam", async (req, res) => {
+  if (!req.session.loggedIn) {
+    return res.redirect("/login");
   }
-})
+  
+  const { language } = req.body;
+  const aadhar = req.session.aadhar;
+  
+  try {
+    // Get all questions for this exam
+    const questionsResult = await pool.query(
+      "SELECT id, correct_answer FROM exam_questions WHERE language = $1",
+      [language]
+    );
+    const questions = questionsResult.rows;
+    
+    // Calculate score
+    let score = 0;
+    const userAnswers = [];
+    
+    questions.forEach(question => {
+      const userAnswer = parseInt(req.body[`q${question.id}`]);
+      userAnswers.push(userAnswer || 0); // 0 means not answered
+      
+      if (userAnswer === question.correct_answer) {
+        score++;
+      }
+    });
+    
+    // Calculate percentage
+    const totalQuestions = questions.length;
+    const percentage = Math.round((score / totalQuestions) * 100);
+    
+    // Save result to database
+    const result = await pool.query(
+      `INSERT INTO exam_results (aadhar, language, score, total_questions, percentage)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [aadhar, language, score, totalQuestions, percentage]
+    );
+    
+    // Redirect to results page
+    res.redirect(`/results/${result.rows[0].id}`);
+  } catch (err) {
+    console.error(err);
+    res.redirect("/exam-portal");
+  }
+});
 
-app.get("/cpp",(req,res)=>{
-  res.render("c");
-})
-
-app.get("/results",(req, res)=>{
-  res.render("results");
-})
+// Route to view exam results
+app.get("/results/:id", async (req, res) => {
+  if (!req.session.loggedIn) {
+    return res.redirect("/login");
+  }
+  
+  try {
+    // Get the result
+    const result = await pool.query(
+      "SELECT * FROM exam_results WHERE id = $1 AND aadhar = $2",
+      [req.params.id, req.session.aadhar]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.redirect("/exam-portal");
+    }
+    
+    // Get the questions and user answers for this exam
+    const questions = await pool.query(
+      "SELECT * FROM exam_questions WHERE language = $1",
+      [result.rows[0].language]
+    );
+    
+    // For simplicity, we'll just show all questions
+    // In a real app, you might want to store user answers in another table
+    
+    res.render("results", {
+      result: result.rows[0],
+      questions: questions.rows,
+      userAnswers: Array(questions.rows.length).fill(0), // Placeholder - in real app you'd store actual answers
+      percentage: result.rows[0].percentage
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect("/exam-portal");
+  }
+});
 
 // Start server
 app.listen(port, () => {
