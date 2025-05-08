@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Exam Results</title>
   <link rel="stylesheet" href="/styles/results.css">
   <style>
+    <% const percentage = result.percentage; %>
     .results-container {
       max-width: 800px;
       margin: 0 auto;
@@ -61,13 +62,12 @@
     
     <div class="result-summary">
       <h2><%= result.language %> Exam</h2>
-      <p class="score"><%= result.score %> out of <%= result.total_questions %> correct (<%= result.percentage %>% )</p>
+      <p class="score"><%= result.score %> out of <%= result.total_questions %> correct (<%= result.percentage %>%)</p>
       <p>Completed on: <%= new Date(result.timestamp).toLocaleString() %></p>
     </div>
     
     <div class="details">
       <h3>Question Details:</h3>
-      
       <% questions.forEach((question, index) => { %>
         <div class="question-result">
           <p><strong>Question <%= index + 1 %>:</strong> <%= question.question %></p>
@@ -82,7 +82,7 @@
         </div>
       <% }) %>
     </div>
-    
+
     <a href="/exam-portal" class="back-btn">Back to Exam Portal</a>
   </div>
 </body>

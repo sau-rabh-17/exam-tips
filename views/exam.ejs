@@ -59,6 +59,8 @@
     <p>Total Questions: <%= questions.length %></p>
     
     <form id="examForm" action="/submit-exam" method="POST">
+      <input type="hidden" name="questionIds" value="<%= questions.map(q => q.id).join(',') %>">
+
       <input type="hidden" name="language" value="<%= examLanguage %>">
       
       <% questions.forEach((question, index) => { %>

@@ -341,7 +341,7 @@ app.get("/exam", async (req, res) => {
     );
     
     res.render("exam", { 
-      examLanguage: language.charAt(0).toUpperCase() + language.slice(1),
+      examLanguage: language,
       questions: questions.rows 
     });
   } catch (err) {
@@ -350,54 +350,87 @@ app.get("/exam", async (req, res) => {
   }
 });
 
+
 // Route to handle exam submission
-app.post("/submit-exam", async (req, res) => {
-  if (!req.session.loggedIn) {
-    return res.redirect("/login");
-  }
-  
-  const { language } = req.body;
-  const aadhar = req.session.aadhar;
-  
+app.post('/submit-exam', async (req, res) => {
   try {
-    // Get all questions for this exam
-    const questionsResult = await pool.query(
-      "SELECT id, correct_answer FROM exam_questions WHERE language = $1",
-      [language]
-    );
-    const questions = questionsResult.rows;
-    
-    // Calculate score
+    // Get Aadhar from the session
+    const aadhar = req.session?.aadhar;
+
+    // If Aadhar is missing in the session, return an error response
+    if (!aadhar) {
+      return res.status(400).send('User session expired. Please log in again.');
+    }
+
+    // Get the submitted question IDs and language
+    const { questionIds, language } = req.body;
+
+    // Parse the questionIds into an array of integers
+    const questionIdArray = questionIds.split(',').map(id => parseInt(id));
+    const totalQuestions = questionIdArray.length;
+
     let score = 0;
     const userAnswers = [];
-    
-    questions.forEach(question => {
-      const userAnswer = parseInt(req.body[`q${question.id}`]);
-      userAnswers.push(userAnswer || 0); // 0 means not answered
-      
-      if (userAnswer === question.correct_answer) {
+    const questions = [];
+
+    // Loop through each question and evaluate the answers
+    for (const questionId of questionIdArray) {
+      const userAnswer = parseInt(req.body[`q${questionId}`]) || null;
+      userAnswers.push(userAnswer);
+
+      // Fetch the question details from the database
+      const result = await pool.query(
+        `SELECT id, question, option1, option2, option3, option4, correct_answer
+         FROM exam_questions
+         WHERE id = $1 AND language = $2`,
+        [questionId, language]
+      );
+
+      // If no matching question was found, skip it
+      if (result.rows.length === 0) continue;
+
+      const question = result.rows[0];
+      questions.push(question);
+
+      // Check if the user's answer is correct
+      if (userAnswer !== null && userAnswer === question.correct_answer) {
         score++;
       }
-    });
-    
-    // Calculate percentage
-    const totalQuestions = questions.length;
+    }
+
+    // Calculate the percentage score
     const percentage = Math.round((score / totalQuestions) * 100);
-    
-    // Save result to database
-    const result = await pool.query(
-      `INSERT INTO exam_results (aadhar, language, score, total_questions, percentage)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-      [aadhar, language, score, totalQuestions, percentage]
+    const timestamp = new Date();
+
+    // Save the exam result into the database
+    await pool.query(
+      `INSERT INTO exam_results (aadhar, language, score, total_questions, percentage, timestamp)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [aadhar, language, score, totalQuestions, percentage, timestamp]
     );
-    
-    // Redirect to results page
-    res.redirect(`/results/${result.rows[0].id}`);
+
+    // Render the results page
+    res.render('results', {
+      result: {
+        language,
+        score,
+        total_questions: totalQuestions,
+        percentage,
+        timestamp
+      },
+      questions,
+      userAnswers
+    });
+
   } catch (err) {
-    console.error(err);
-    res.redirect("/exam-portal");
+    console.error('Error submitting exam:', err);
+    res.status(500).send('Error submitting exam');
   }
 });
+
+
+
+
 
 // Route to view exam results
 app.get("/results/:id", async (req, res) => {
@@ -422,13 +455,12 @@ app.get("/results/:id", async (req, res) => {
       [result.rows[0].language]
     );
     
-    // For simplicity, we'll just show all questions
-    // In a real app, you might want to store user answers in another table
+   
     
     res.render("results", {
       result: result.rows[0],
       questions: questions.rows,
-      userAnswers: Array(questions.rows.length).fill(0), // Placeholder - in real app you'd store actual answers
+      userAnswers: Array(questions.rows.length).fill(0), 
       percentage: result.rows[0].percentage
     });
   } catch (err) {
