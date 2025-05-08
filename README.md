@@ -5,7 +5,7 @@ Exam Tips is a platform designed to help students by providing a variety of tool
 - **Open Forum**: A space where users can share their ideas and experiences.
 - **My Wall**: A personal profile section for each user.
 - **Repository**: Users can upload and share their work related to exams.
-- **Exam Portal**: This feature is still under development but will soon allow users to access exam-related resources.
+- **Exam Portal**: This feature is still under development need to add some logic to display result!!!
 
 ## Technologies Used
 - **EJS**: Templating engine for rendering dynamic views.
@@ -35,6 +35,7 @@ The following dependencies are used in the project:
    ```bash
    npm install
 3. Set up PostgreSQL database and configure the connection in your project.
+   (Database setup code will be available soon)
 
 4. Run the application:
    ```bash
