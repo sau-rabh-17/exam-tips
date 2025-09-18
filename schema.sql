@@ -79,3 +79,5 @@ CREATE TABLE IF NOT EXISTS exam_results (
     percentage INT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+

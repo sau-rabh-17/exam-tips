@@ -63,7 +63,7 @@
                     </p>
                     <button class="edit-btn" onclick="toggleEdit('about-section')">Edit</button>
                     <div id="about-section" class="edit-section">
-                        <form action="/update-about" method="POST">
+                        <form action="/myWall/update-about" method="POST">
                             <textarea name="about" rows="4"
                                 cols="50"><%= user.about || "No about information provided" %></textarea>
                             <button type="submit" class="edit-btn">Save</button>
@@ -108,7 +108,7 @@
                                         <button class="edit-btn"
                                             onclick="toggleEdit('experience-section')">Edit</button>
                                         <div id="experience-section" class="edit-section">
-                                            <form action="/update-experience" method="POST">
+                                            <form action="/myWall/update-experience" method="POST">
                                                 <textarea name="experience" rows="6"
                                                     cols="50"><%= user.experiences || "No experiences listed" %></textarea>
                                                 <button type="submit" class="edit-btn">Save</button>
@@ -124,7 +124,7 @@
                                         <button class="edit-btn"
                                             onclick="toggleEdit('contributions-section')">Edit</button>
                                         <div id="contributions-section" class="edit-section">
-                                            <form action="/update-contributions" method="POST">
+                                            <form action="/myWall/update-contributions" method="POST">
                                                 <textarea name="contributions" rows="6"
                                                     cols="50"><%= user.contributions || "No contributions available" %></textarea>
                                                 <button type="submit" class="edit-btn">Save</button>
