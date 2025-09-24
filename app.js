@@ -46,9 +46,9 @@ app.use("/forum", forumRoutes);
 app.use("/exam-portal", examRoutes);
 
 // 404 fallback
-app.use((req, res) => {
-  res.status(404).render("404");
-});
+// app.use((req, res) => {
+//   res.status(404).render("404");
+// });
 
 // Start server
 app.listen(port, () =>
