@@ -2,89 +2,126 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="../styles/register.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="../styles/register.css">
+  <style>
+    /* Error & success message styling */
+    .message {
+      text-align: center;
+      margin: 10px 0;
+      padding: 8px;
+      border-radius: 5px;
+      display: none;
+      /* hidden by default */
+    }
+
+    .error {
+      background-color: #ff4d4f;
+      color: white;
+    }
+
+    .success {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-900 text-white">
-    <header>
-        <h1 class="logo-top">EXAM PORTAL</h1>
-        <div class="menu-icon" id="menu-icon">&#9776;</div>
-        <nav class="navbar" id="navbar">
-            <a href="index.html" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#service">Services</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
 
-    <div class="container">
-        <div class="task-form">
-            <h2 class="title">Create New Account</h2>
-            <form id="registerForm" action="/submit" method="POST" class="register-form form">
-                <div class="input-group">
-                  <h3 class="label">Name</h3>
-                  <input type="text" id="name" name="name" placeholder="Enter your name" class="input-field" required />
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Aadhar</h3>
-                  <input type="text" id="aadhar" name="aadhar" placeholder="Enter your Aadhar" class="input-field" required />
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Password</h3>
-                  <input type="password" id="password" name="password" placeholder="Enter your password" class="input-field" required />
-                </div>
-                <div class="input-group">
-                  <h3 class="label">E-Mail ID</h3>
-                  <input type="email" id="email" name="email" placeholder="Enter your email" class="input-field" required />
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Age</h3>
-                  <input type="number" id="age" name="age" placeholder="Enter your age" class="input-field" required />
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Gender</h3>
-                  <div class="radio-group">
-                    <label><input type="radio" name="gender" value="Male" required /> Male</label>
-                    <label><input type="radio" name="gender" value="Female" required /> Female</label>
-                  </div>
-                </div>
-                <div class="input-group">
-                  <h3 class="label">College Address</h3>
-                  <textarea id="address" name="address" placeholder="Enter your college address" class="textarea-field" required></textarea>
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Branch</h3>
-                  <select id="branch" name="branch" class="input-field" required>
-                    <option value="">Select Branch</option>
-                    <option value="CS">Computer Science</option>
-                    <option value="IT">Information Technology</option>
-                    <option value="EE">Electrical Engineering</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <h3 class="label">Technical Skills</h3>
-                  <div class="checkbox-group">
-                    <label><input type="checkbox" name="skills" value="C" /> C</label>
-                    <label><input type="checkbox" name="skills" value="Java" /> Java</label>
-                    <label><input type="checkbox" name="skills" value="Python" /> Python</label>
-                    <label><input type="checkbox" name="skills" value="JSP" /> JSP</label>
-                  </div>
-                </div>
-                <div class="button-group">
-                  <button type="submit" class="button submit-button">Submit</button>
-                  <button type="reset" class="button reset-button">Reset</button>
-                </div>
-              </form>
-              
-            <p class="text-center text-gray-400 mt-4" style="text-align: center; margin-top: 15px;">
-                Already have an account? <a href="/login" class="text-blue-500">Login here</a>
-            </p>
+  <header>
+    <h1 class="logo-top">EXAM PORTAL</h1>
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <nav class="navbar" id="navbar">
+      <a href="/" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#service">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="task-form">
+      <h2 class="title">Create New Account</h2>
+
+      <!-- Error or success message -->
+      <% if (typeof error !=='undefined' && error) { %>
+        <div id="message" class="message error">
+          <%= error %>
         </div>
+        <% } else if (typeof success !=='undefined' && success) { %>
+          <div id="message" class="message success">
+            <%= success %>
+          </div>
+          <% } %>
+
+            <form id="registerForm" action="/submit" method="POST" class="register-form form">
+
+              <!-- Name -->
+              <div class="input-group">
+                <h3 class="label">Name</h3>
+                <input type="text" id="name" name="name" class="input-field" placeholder="Enter your name" required />
+              </div>
+
+              <!-- Email -->
+              <div class="input-group">
+                <h3 class="label">E-Mail ID</h3>
+                <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email"
+                  required />
+              </div>
+
+              <!-- Password -->
+              <div class="input-group">
+                <h3 class="label">Password</h3>
+                <input type="password" id="password" name="password" class="input-field"
+                  placeholder="Enter your password" required />
+              </div>
+
+              <!-- Gender -->
+              <div class="input-group">
+                <h3 class="label">Gender</h3>
+                <div class="radio-group">
+                  <label><input type="radio" name="gender" value="Male" required /> Male</label>
+                  <label><input type="radio" name="gender" value="Female" required /> Female</label>
+                  <label><input type="radio" name="gender" value="Other" required /> Other</label>
+                </div>
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="input-group">
+                <h3 class="label">Date of Birth</h3>
+                <input type="date" id="dob" name="dob" class="input-field" required />
+              </div>
+
+              <!-- Buttons -->
+              <div class="button-group">
+                <button type="submit" class="button submit-button">Submit</button>
+                <button type="reset" class="button reset-button">Reset</button>
+              </div>
+
+            </form>
+
+            <p class="text-center text-gray-400 mt-4" style="text-align: center; margin-top: 15px;">
+              Already have an account? <a href="/login" class="text-blue-500">Login here</a>
+            </p>
     </div>
+  </div>
+
+  <script>
+    // Show the message for 5 seconds
+    const msgDiv = document.getElementById('message');
+    if (msgDiv) {
+      msgDiv.style.display = 'block';
+      setTimeout(() => {
+        msgDiv.style.display = 'none';
+      }, 5000);
+    }
+
+  </script>
+
 </body>
 
 </html>

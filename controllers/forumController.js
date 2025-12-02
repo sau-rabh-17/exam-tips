@@ -14,16 +14,16 @@ export const listPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const { title, category, content } = req.body;
-  const aadhar = req.session.aadhar;
-  if (!aadhar) return res.redirect("/login");
+  const email = req.session.email;
+  if (!email) return res.redirect("/login");
 
   try {
-    const userResult = await pool.query("SELECT name FROM users WHERE aadhar=$1", [aadhar]);
+    const userResult = await pool.query("SELECT name FROM users WHERE email=$1", [email]);
     if (userResult.rows.length === 0) return res.redirect("/login");
 
     await pool.query(
-      `INSERT INTO posts (aadhar,name,title,category,content) VALUES ($1,$2,$3,$4,$5)`,
-      [aadhar, userResult.rows[0].name, title, category, content]
+      `INSERT INTO posts (email,name,title,category,content) VALUES ($1,$2,$3,$4,$5)`,
+      [email, userResult.rows[0].name, title, category, content]
     );
     res.redirect("/forum");
   } catch (err) {

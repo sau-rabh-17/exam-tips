@@ -6,7 +6,7 @@ export const listRepos = async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT e.repo_name,e.description,e.is_readme,e.created_at,u.name as user_name
-       FROM erepo e JOIN users u ON e.aadhar = u.aadhar`
+       FROM erepo e JOIN users u ON e.email = u.email`
     );
     res.render("respo", { repositories: result.rows });
   } catch (err) {
@@ -17,22 +17,22 @@ export const listRepos = async (req, res) => {
 
 export const createRepo = async (req, res) => {
   const { repo_name, description, is_readme } = req.body;
-  const aadhar = req.session.aadhar;
-  if (!aadhar) return res.redirect("/login");
+  const email = req.session.email;
+  if (!email) return res.redirect("/login");
 
   try {
-    const userResult = await pool.query("SELECT name FROM users WHERE aadhar=$1", [aadhar]);
+    const userResult = await pool.query("SELECT name FROM users WHERE email=$1", [email]);
     if (userResult.rows.length === 0) return res.redirect("/login");
 
     const userName = userResult.rows[0].name;
     await pool.query(
-      `INSERT INTO erepo (aadhar,user_name,repo_name,description,is_readme) VALUES ($1,$2,$3,$4,$5)`,
-      [aadhar, userName, repo_name, description, is_readme]
+      `INSERT INTO erepo (email,user_name,repo_name,description,is_readme) VALUES ($1,$2,$3,$4,$5)`,
+      [email, userName, repo_name, description, is_readme]
     );
 
     await pool.query(
-      `UPDATE user_info SET repositories=array_append(repositories,$1) WHERE aadhar=$2`,
-      [repo_name, aadhar]
+      `UPDATE user_info SET repositories=array_append(repositories,$1) WHERE email=$2`,
+      [repo_name, email]
     );
 
     res.redirect("/erepo");

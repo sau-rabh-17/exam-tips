@@ -4,8 +4,8 @@ export const examPortal = async (req, res) => {
   if (!req.session.loggedIn) return res.redirect("/login");
   try {
     const results = await pool.query(
-      "SELECT * FROM exam_results WHERE aadhar=$1 ORDER BY timestamp DESC",
-      [req.session.aadhar]
+      "SELECT * FROM exam_results WHERE email=$1 ORDER BY timestamp DESC",
+      [req.session.email]
     );
     res.render("exam-portal", { results: results.rows });
   } catch (err) {
@@ -17,7 +17,7 @@ export const examPortal = async (req, res) => {
 export const startExam = async (req, res) => {
   if (!req.session.loggedIn) return res.redirect("/login");
   const { lang } = req.query;
-  const valid = ["java", "cpp", "python"];
+  const valid = ["Java", "Cpp", "Python"];
   if (!valid.includes(lang)) return res.redirect("/exam-portal");
 
   try {
@@ -34,8 +34,8 @@ export const startExam = async (req, res) => {
 
 export const submitExam = async (req, res) => {
   try {
-    const aadhar = req.session?.aadhar;
-    if (!aadhar) return res.status(400).send("Session expired");
+    const email = req.session?.email;
+    if (!email) return res.status(400).send("Session expired");
 
     const { questionIds, language } = req.body;
     const qIds = questionIds.split(",").map(id => parseInt(id));
@@ -57,9 +57,9 @@ export const submitExam = async (req, res) => {
     const percentage = Math.round((score / qIds.length) * 100);
     const timestamp = new Date();
     await pool.query(
-      `INSERT INTO exam_results (aadhar,language,score,total_questions,percentage,timestamp)
+      `INSERT INTO exam_results (email,language,score,total_questions,percentage,timestamp)
        VALUES ($1,$2,$3,$4,$5,$6)`,
-      [aadhar, language, score, qIds.length, percentage, timestamp]
+      [email, language, score, qIds.length, percentage, timestamp]
     );
 
     res.render("results", {
@@ -77,8 +77,8 @@ export const viewResult = async (req, res) => {
   if (!req.session.loggedIn) return res.redirect("/login");
   try {
     const result = await pool.query(
-      "SELECT * FROM exam_results WHERE id=$1 AND aadhar=$2",
-      [req.params.id, req.session.aadhar]
+      "SELECT * FROM exam_results WHERE id=$1 AND email=$2",
+      [req.params.id, req.session.email]
     );
     if (result.rows.length === 0) return res.redirect("/exam-portal");
 

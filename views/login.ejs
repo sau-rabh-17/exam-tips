@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="../styles/login.css">
+  <style>
+    .error-msg {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+      display: none; /* hidden by default */
+    }
+  </style>
 </head>
 <body class="bg-gray-900 text-white">
     <header>
@@ -22,6 +30,12 @@
     <div class="container">
         <div class="task-form">
             <h2 class="title">Login</h2>
+            
+            <!-- Error Message -->
+            <% if (error) { %>
+              <div id="errorMsg" class="error-msg"><%= error %></div>
+            <% } %>
+
             <form id="loginForm" action="/loginRedirect" method="POST" class="login-form form">
                 <div class="input-group">
                   <h3 class="label">E-Mail ID</h3>
@@ -46,8 +60,18 @@
                   Don't have an account? <a href="/register" class="text-blue-500">Register here</a>
                 </p>
               </form>
-              
         </div>
     </div>
+
+    <script>
+      // Show error message for 5 seconds if it exists
+      const errorDiv = document.getElementById('errorMsg');
+      if (errorDiv) {
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 5000); // 5000ms = 5 seconds
+      }
+    </script>
 </body>
 </html>

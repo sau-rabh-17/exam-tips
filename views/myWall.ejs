@@ -4,188 +4,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wall</title>
-    <link rel="stylesheet" href="/styles/myWall.css">
-    <link rel="stylesheet" href="/styles/footer.css">
+    <title>My Profile</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* Edit Button */
-        .edit-btn {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
         }
 
-        .edit-btn:hover {
-            background-color: #0056b3;
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
         }
 
-        /* Edit Section */
-        .edit-section {
-            display: none;
-            /* Hidden by default */
-            margin-top: 10px;
+        /* Header */
+        header {
+            background: #1e293b;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #a78bfa;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 80%;
+            margin: 40px auto;
+            padding: 0 20px;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card */
+        .card {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h2 {
+            margin: 0 0 15px 0;
+            color: #a78bfa;
+            font-size: 22px;
+        }
+
+        .repo-card,
+        .result-card {
+            background: #334155;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+
+        .repo-card:hover,
+        .result-card:hover {
+            background: #475569;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #334155;
+            margin: 20px 0;
+        }
+
+        .empty-text {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .date {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #94a3b8;
         }
     </style>
 </head>
 
 <body>
+
+    <!-- Header -->
     <header>
-        <h1 class="logo-top">myWall-myProfile</h1>
-        <div class="menu-icon" id="menu-icon">&#9776;</div>
-        <nav class="navbar" id="navbar">
-            <a href="/" class="active">Home</a>
+        <h1>My Profile</h1>
+        <nav>
+            <a href="/">Home</a>
             <a href="/erepo">e-Repository</a>
-            <a href="/forum">OpenForum</a>
             <a href="/exam-portal">Exam Portal</a>
             <a href="/logout">Logout</a>
         </nav>
     </header>
-    <div class="container">
-        <% if (user) { %>
-            <div class="left-section">
-                <div class="profile-picture">
-                    <img src="https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo="
-                        alt="Profile Picture">
-                </div>
-                <div class="details">
-                    <h2>
-                        <%= user.name %>
-                    </h2>
-                </div>
-                <div class="about">
-                    <h3>About Me</h3>
-                    <p id="about-text">
-                        <%= user.about || "No about information provided" %>
-                    </p>
-                    <button class="edit-btn" onclick="toggleEdit('about-section')">Edit</button>
-                    <div id="about-section" class="edit-section">
-                        <form action="/myWall/update-about" method="POST">
-                            <textarea name="about" rows="4"
-                                cols="50"><%= user.about || "No about information provided" %></textarea>
-                            <button type="submit" class="edit-btn">Save</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h3>Skills</h3>
-                    <% if (user.skills && Array.isArray(user.skills)) { %>
-                        <% user.skills.forEach(skill=> { %> <!-- Use 'skill' instead of 'repo' -->
-                            <div>
-                                <h2>
-                                    <%= skill %>
-                                </h3> <!-- Correct syntax to output the skill name -->
-                            </div>
-                            <% }) %>
-                                <% } else { %>
-                                    <p>No skill available</p>
-                                    <% } %>
-                </div>
-            </div>
 
-            <div class="right-section">
-                <h2>Repositories</h2>
-                <% if (user.repositories && Array.isArray(user.repositories)) { %>
-                    <% user.repositories.forEach(repo=> { %>
-                        <div class="repository">
-                            <h3>Repository Name: <%= repo %>
+    <!-- Main Grid -->
+    <div class="container">
+
+        <!-- USER CARD — Full Width -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Profile Details</h2>
+            <p><strong>Name:</strong>
+                <%= user.name %>
+            </p>
+            <p><strong>Email:</strong>
+                <%= user.email %>
+            </p>
+        </div>
+
+        <!-- REPOSITORIES CARD — Half Width -->
+        <div class="card">
+            <h2>Your Repositories</h2>
+
+            <% if (repos.length===0) { %>
+                <p class="empty-text">No repositories yet.</p>
+                <% } else { %>
+                    <% repos.forEach(r=> { %>
+                        <div class="repo-card">
+                            <h3>
+                                <%= r.repo_name %>
                             </h3>
+                            <p>
+                                <%= r.description %>
+                            </p>
+                            <div class="date">Created on: <%= new Date(r.created_at).toLocaleDateString() %>
+                            </div>
                         </div>
                         <% }) %>
-                            <% } else { %>
-                                <p>No repositories available.</p>
-                                <% } %>
+                            <% } %>
+        </div>
 
-                                    <!-- Experience Section -->
-                                    <div class="experience">
-                                        <h2>Experience</h2>
-                                        <div id="experience-text">
-                                            <%= user.experiences || "No experiences listed" %>
-                                        </div>
-                                        <button class="edit-btn"
-                                            onclick="toggleEdit('experience-section')">Edit</button>
-                                        <div id="experience-section" class="edit-section">
-                                            <form action="/myWall/update-experience" method="POST">
-                                                <textarea name="experience" rows="6"
-                                                    cols="50"><%= user.experiences || "No experiences listed" %></textarea>
-                                                <button type="submit" class="edit-btn">Save</button>
-                                            </form>
-                                        </div>
-                                    </div>
+        <!-- EXAM RESULTS CARD — Half Width -->
+        <div class="card">
+            <h2>Your Exam Results</h2>
 
-                                    <div class="contributions">
-                                        <h2>Contributions</h2>
-                                        <div id="contributions-text">
-                                            <%= user.contributions || "No contributions available" %>
-                                        </div>
-                                        <button class="edit-btn"
-                                            onclick="toggleEdit('contributions-section')">Edit</button>
-                                        <div id="contributions-section" class="edit-section">
-                                            <form action="/myWall/update-contributions" method="POST">
-                                                <textarea name="contributions" rows="6"
-                                                    cols="50"><%= user.contributions || "No contributions available" %></textarea>
-                                                <button type="submit" class="edit-btn">Save</button>
-                                            </form>
-                                        </div>
-                                    </div>
-            </div>
-            <% } %>
+            <% if (results.length===0) { %>
+                <p class="empty-text">No exam results yet.</p>
+                <% } else { %>
+                    <% results.forEach(e=> { %>
+                        <div class="result-card">
+                            <h3>
+                                <%= e.language %> Exam
+                            </h3>
+                            <p>Score: <%= e.score %> / <%= e.total_questions %>
+                            </p>
+                            <p>Percentage: <%= e.percentage %>%</p>
+                            <div class="date">Taken: <%= new Date(e.timestamp).toLocaleDateString() %>
+                            </div>
+                        </div>
+                        <% }) %>
+                            <% } %>
+        </div>
+
     </div>
 
-    <footer class="footer">
-        <div class="footer-section">
-            <img src="https://cdn.dribbble.com/users/3324342/screenshots/6164965/media/5136e8b8dca93ed8564770f967383aa0.jpg?resize=400x0"
-                alt="Exam Portal Logo" class="footer-logo">
-            <p>Exam Tips is a trusted platform for all your exam needs. Providing seamless exam scheduling, conducting,
-                and results processing.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </div>
-        <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Help Center</a></li>
-                <li><a href="#">FAQs</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Student Resources</h3>
-            <ul>
-                <li><a href="#">Exam Schedule</a></li>
-                <li><a href="#">Study Materials</a></li>
-                <li><a href="#">Practice Tests</a></li>
-                <li><a href="#">Results</a></li>
-                <li><a href="#">Guidelines</a></li>
-            </ul>
-        </div>
-        <div class="footer-section-contact">
-            <h3>Contact Information</h3>
-            <p>Silicon University</p>
-            <p>Patia, Bhubneswar</p>
-            <p>CSE C2</p>
-            <p>Email: <a href="mailto:raghvendrapratap1552004@gmail.com">raghvendrapratap1552004@gmail.com</a></p>
-            <p>Email: <a href="mailto:saurabhsingh@gmail.com">saurabhsingh@gmail.com</a></p>
-            <p>Phone: 9113701451</p>
-            <p>Phone: 8521970487</p>
-        </div>
-    </footer>
 
-    <script>
-        function toggleEdit(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.style.display = section.style.display === "none" ? "block" : "none";
-        }
-    </script>
 </body>
 
 </html>

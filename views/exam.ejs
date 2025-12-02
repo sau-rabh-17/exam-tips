@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= examLanguage %> Exam</title>
+  <title>
+    <%= examLanguage %> Exam
+  </title>
   <link rel="stylesheet" href="/styles/exam.css">
   <style>
     .exam-container {
@@ -11,21 +14,26 @@
       margin: 0 auto;
       padding: 20px;
     }
+
     .question {
       background: #2d3748;
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
     }
+
     .options {
       margin-top: 15px;
     }
+
     .option {
       margin: 10px 0;
     }
+
     .option input {
       margin-right: 10px;
     }
+
     .timer {
       position: fixed;
       top: 20px;
@@ -36,6 +44,7 @@
       border-radius: 5px;
       font-weight: bold;
     }
+
     .submit-btn {
       background: #4299e1;
       color: white;
@@ -46,70 +55,114 @@
       font-size: 16px;
       margin-top: 20px;
     }
+
     .submit-btn:hover {
       background: #3182ce;
     }
   </style>
 </head>
+
 <body>
-  <div class="timer" id="timer">Time Left: 30:00</div>
-  
+  <div class="timer" id="timer">Time Left: 10:00</div>
+
   <div class="exam-container">
-    <h1><%= examLanguage %> Programming Exam</h1>
-    <p>Total Questions: <%= questions.length %></p>
-    
+    <h1>
+      <%= examLanguage %> Programming Exam
+    </h1>
+    <p>Total Questions: <%= questions.length %>
+    </p>
+
     <form id="examForm" action="/exam-portal/submit-exam" method="POST">
       <input type="hidden" name="questionIds" value="<%= questions.map(q => q.id).join(',') %>">
-
       <input type="hidden" name="language" value="<%= examLanguage %>">
-      
-      <% questions.forEach((question, index) => { %>
-        <div class="question">
-          <p><strong>Question <%= index + 1 %>:</strong> <%= question.question %></p>
+
+      <% questions.forEach((question, index)=> { %>
+        <div class="question" style="<%= index === 0 ? '' : 'display:none;' %>" data-index="<%= index %>">
+          <p><strong>Question <%= index + 1 %>:</strong>
+            <%= question.question %>
+          </p>
           <div class="options">
             <div class="option">
               <input type="radio" name="q<%= question.id %>" id="q<%= question.id %>_1" value="1" required>
-              <label for="q<%= question.id %>_1"><%= question.option1 %></label>
+              <label for="q<%= question.id %>_1">
+                <%= question.option1 %>
+              </label>
             </div>
             <div class="option">
               <input type="radio" name="q<%= question.id %>" id="q<%= question.id %>_2" value="2">
-              <label for="q<%= question.id %>_2"><%= question.option2 %></label>
+              <label for="q<%= question.id %>_2">
+                <%= question.option2 %>
+              </label>
             </div>
             <div class="option">
               <input type="radio" name="q<%= question.id %>" id="q<%= question.id %>_3" value="3">
-              <label for="q<%= question.id %>_3"><%= question.option3 %></label>
+              <label for="q<%= question.id %>_3">
+                <%= question.option3 %>
+              </label>
             </div>
             <div class="option">
               <input type="radio" name="q<%= question.id %>" id="q<%= question.id %>_4" value="4">
-              <label for="q<%= question.id %>_4"><%= question.option4 %></label>
+              <label for="q<%= question.id %>_4">
+                <%= question.option4 %>
+              </label>
             </div>
           </div>
         </div>
-      <% }) %>
-      
-      <button type="submit" class="submit-btn">Submit Exam</button>
+        <% }) %>
+
+          <div class="navigation-buttons" style="margin-top: 20px;">
+            <button type="button" id="prevBtn" class="submit-btn" style="display:none;">Previous</button>
+            <button type="button" id="nextBtn" class="submit-btn">Next</button>
+            <button type="submit" id="submitBtn" class="submit-btn" style="display:none;">Submit Exam</button>
+          </div>
     </form>
   </div>
 
   <script>
-    // Timer functionality (30 minutes)
-    let timeLeft = 30 * 60; // 30 minutes in seconds
-    const timerElement = document.getElementById('timer');
-    
-    const timer = setInterval(() => {
-      timeLeft--;
-      
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-      
-      timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        alert('Time is up! Your exam will be automatically submitted.');
-        document.getElementById('examForm').submit();
-      }
-    }, 1000);
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll('.question');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showQuestion(index) {
+      questions.forEach((q, i) => q.style.display = i === index ? '' : 'none');
+      prevBtn.style.display = index === 0 ? 'none' : '';
+      nextBtn.style.display = index === questions.length - 1 ? 'none' : '';
+      submitBtn.style.display = index === questions.length - 1 ? '' : 'none';
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) currentQuestion--;
+      showQuestion(currentQuestion);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentQuestion < questions.length - 1) currentQuestion++;
+      showQuestion(currentQuestion);
+    });
+
+    showQuestion(currentQuestion); // initialize
+
+    let timeLeft = 10 * 60; // 10 minutes in seconds
+  const timerElement = document.getElementById('timer');
+
+  const timerInterval = setInterval(() => {
+    timeLeft--;
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      alert('Time is up! Your exam will be submitted automatically.');
+      document.getElementById('examForm').submit();
+    }
+  }, 1000);
   </script>
+
 </body>
+
 </html>
